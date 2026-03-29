@@ -44,6 +44,7 @@ copy_repo() {
         --exclude='build' \
         --exclude='.gradle' \
         --exclude='.gradle-user-home' \
+        --exclude='data' \
         --exclude='uploads' \
         -cf - . | (cd "$TMP_SRC" && tar -xf -)
 }
