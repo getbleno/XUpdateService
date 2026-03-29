@@ -3,6 +3,8 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+HOST_UID="$(id -u)"
+HOST_GID="$(id -g)"
 
 BUILD_IMAGE="${BUILD_IMAGE:-eclipse-temurin:8-jdk}"
 RUNTIME_IMAGE="${RUNTIME_IMAGE:-eclipse-temurin:8-jre}"
@@ -141,13 +143,15 @@ PY
 
 echo "Building jar inside Docker with JDK 8..."
 docker run --rm \
+    --user "${HOST_UID}:${HOST_GID}" \
     -v "$TMP_SRC:/workspace" \
-    -v "$BUILD_CACHE_DIR:/root/.gradle" \
+    -v "$BUILD_CACHE_DIR:/tmp/gradle-home" \
     -w /workspace \
     "$BUILD_IMAGE" \
     bash -lc '
         set -euo pipefail
         chmod +x ./gradlew
+        export GRADLE_USER_HOME=/tmp/gradle-home
         ./gradlew --no-daemon clean bootJar
     '
 
