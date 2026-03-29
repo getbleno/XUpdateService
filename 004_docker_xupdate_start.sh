@@ -14,7 +14,6 @@ CONTAINER_NAME="${CONTAINER_NAME:-xupdateservice-app}"
 PORT="${PORT:-1111}"
 HOST_BIND="${HOST_BIND:-0.0.0.0}"
 APP_FILES_PATH="${APP_FILES_PATH:-$ROOT_DIR/apps}"
-BUILD_CACHE_DIR="${BUILD_CACHE_DIR:-$ROOT_DIR/.gradle-user-home}"
 
 DB_NAME="${DB_NAME:-XUpdateService}"
 DB_URL="${DB_URL:-jdbc:mysql://host.docker.internal:3306/xupdate?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true}"
@@ -55,7 +54,7 @@ need_cmd docker
 need_cmd tar
 need_cmd python3
 
-mkdir -p "$APP_FILES_PATH" "$BUILD_CACHE_DIR"
+mkdir -p "$APP_FILES_PATH"
 if [[ ! -d "$APP_FILES_PATH" ]]; then
     echo "Failed to create app files directory: $APP_FILES_PATH" >&2
     exit 1
@@ -145,13 +144,13 @@ echo "Building jar inside Docker with JDK 8..."
 docker run --rm \
     --user "${HOST_UID}:${HOST_GID}" \
     -v "$TMP_SRC:/workspace" \
-    -v "$BUILD_CACHE_DIR:/tmp/gradle-home" \
     -w /workspace \
     "$BUILD_IMAGE" \
     bash -lc '
         set -euo pipefail
         chmod +x ./gradlew
-        export GRADLE_USER_HOME=/tmp/gradle-home
+        mkdir -p /workspace/.gradle-user-home
+        export GRADLE_USER_HOME=/workspace/.gradle-user-home
         ./gradlew --no-daemon clean bootJar
     '
 
