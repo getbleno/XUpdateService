@@ -103,5 +103,5 @@ JDBC URL:
 jdbc:mysql://localhost:$MYSQL_PORT/$MYSQL_DATABASE?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
 
 Next step:
-./02_import_mysql.sh
+./003_docker_mysql_import.sh
 EOF
