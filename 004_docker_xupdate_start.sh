@@ -198,6 +198,7 @@ docker run -d \
     --name "$CONTAINER_NAME" \
     --restart unless-stopped \
     -p "${HOST_BIND}:${PORT}:${PORT}" \
+    --add-host host.docker.internal:host-gateway \
     -e JAVA_OPTS="$JAVA_OPTS" \
     -e PORT="$PORT" \
     -e DB_NAME="$DB_NAME" \

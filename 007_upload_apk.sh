@@ -3,7 +3,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-BASE_URL="${BASE_URL:-http://127.0.0.1:1111}"
+BASE_URL="${BASE_URL:-http://update.app.getbleno.com:1111}"
 APK_DIR="${1:-}"
 DEFAULT_UPDATE_STATUS="${DEFAULT_UPDATE_STATUS:-1}"
 DEFAULT_MODIFY_CONTENT="${DEFAULT_MODIFY_CONTENT:-update}"
